@@ -130,6 +130,56 @@ nav .btn{padding:11px 16px}
 .ticker b::after{content:"";width:7px;height:7px;background:var(--app);flex:none}
 @keyframes scrollx{to{transform:translateX(-50%)}}
 
+/* ---------- LA MAQUETTE — dérivée de l'app (ContentView.swift) ----------
+   L'app n'a qu'UNE zone (slotCount = 1) : on y colle le lien, et cette même
+   zone devient la progression du job lancé depuis elle — hauteur identique
+   (slotHeight), la fenêtre ne saute jamais. Les jobs supplémentaires (barre
+   de menu, glisser-déposer) tombent dans la liste en dessous.
+   Rendue en aplats plutôt qu'en capture : pas de bordures, pas d'arrondis.
+   Tout est scopé sous .shot — `.row` sert déjà à la section Aperçu. */
+.shot{background:var(--paper-2);padding:0;overflow:hidden}
+.shot .bar{background:var(--ink);padding:11px 16px;display:flex;align-items:center;gap:8px}
+.shot .bar i{width:9px;height:9px;border-radius:50%;flex:none}
+.shot .bar i:nth-child(1){background:var(--red)}
+.shot .bar i:nth-child(2){background:var(--yellow)}
+.shot .bar i:nth-child(3){background:var(--app)}
+.shot .bar span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#8f8f8f;margin-left:8px}
+.shot .body{padding:22px}
+
+/* barre de destination */
+.shot .dest{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.shot .pick{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;background:var(--paper);
+  padding:7px 11px;color:#3a3a3a;flex:none}
+.shot .path{font-family:var(--mono);font-size:11px;color:#5a5a5a;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+
+/* la zone unique — ici occupée par le job en cours */
+.shot .slot{background:var(--white);padding:14px 16px}
+.shot .slot-h{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.shot .slot-h .ic{font-family:var(--mono);font-size:12px;color:var(--app);flex:none}
+.shot .slot-h .nm{font-size:14px;font-weight:800;letter-spacing:-.01em;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.shot .slot-h .stop{margin-left:auto;font-family:var(--mono);font-size:11px;color:#8f8f8f;flex:none}
+.shot .prog{height:6px;background:var(--paper-2);margin-bottom:9px}
+.shot .prog i{display:block;height:100%;width:62%;background:var(--app)}
+.shot .slot .meta{font-family:var(--mono);font-size:10.5px;color:#5a5a5a}
+.shot .slot .meta b{color:var(--app);font-weight:700}
+
+/* la rangée d'actions */
+.shot .acts{display:flex;align-items:center;gap:8px;margin-top:12px}
+.shot .acts span{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;background:var(--paper);
+  padding:8px 12px;color:#3a3a3a}
+.shot .acts span.on{background:var(--app);color:var(--white)}
+.shot .acts .sp{margin-left:auto;background:none;padding:0}
+
+/* les jobs sans zone, listés en dessous */
+.shot .jobs{margin-top:16px}
+.shot .job{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--paper);margin-bottom:5px}
+.shot .job .ic{font-family:var(--mono);font-size:11px;color:var(--app);flex:none}
+.shot .job .nm{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.shot .job .st{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:#5a5a5a;flex:none}
+.shot .veil{padding:10px 14px;font-family:var(--mono);font-size:10.5px;color:#a8a8a8;text-align:right}
+
 /* ---------- SECTIONS ---------- */
 section{padding:74px 0}
 .sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;
@@ -217,6 +267,7 @@ footer .tag:hover{border-color:var(--app)}
         <span class="name">Torrent DL Pro Plus 3000</span>
       </a>
       <div class="nav-links">
+        <a href="#app">L'app</a>
         <a href="#features">Fonctions</a>
         <a href="#apercu">Aperçu</a>
         <a href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GitHub</a>
@@ -262,7 +313,51 @@ footer .tag:hover{border-color:var(--app)}
     <div class="track" id="track"><b>macOS 14+</b><b>Universel · Apple Silicon + Intel</b><b>aria2 embarqué</b></div>
   </div>
 
-  <section id="features" class="wrap">
+  <section id="app" class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow rv">L'APP</p>
+      <p class="note rv">Une seule zone, et le job lancé depuis elle.</p>
+    </div>
+    <h2 class="rv" style="margin-bottom:40px">La zone où vous collez<br>devient la progression.</h2>
+    <div class="shot rv" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>TORRENT DL PRO PLUS 3000</span></div>
+      <div class="body">
+        <!-- la barre de destination : bouton + dossier ouvrable dans le Finder -->
+        <div class="dest">
+          <span class="pick">Choisir le dossier…</span>
+          <span class="path">▤ /Users/sandro/Downloads</span>
+        </div>
+
+        <!-- la zone de saisie a laissé place au job lancé depuis elle,
+             à hauteur identique — « Coller un lien magnet ou .torrent… » -->
+        <div class="slot">
+          <div class="slot-h">
+            <span class="ic">↓</span>
+            <span class="nm">Sintel.2010.1080p.BluRay.x264</span>
+            <span class="stop">■</span>
+          </div>
+          <div class="prog"><i></i></div>
+          <p class="meta">Téléchargement · <b>8.0MiB/s</b> · ETA 44s · 11 seeders · 62 %</p>
+        </div>
+
+        <div class="acts">
+          <span class="on">Coller et télécharger</span>
+          <span>Fichier .torrent…</span>
+          <span class="sp"></span>
+          <span>Télécharger</span>
+        </div>
+
+        <!-- les jobs sans zone : barre de menu, glisser-déposer -->
+        <div class="jobs">
+          <div class="job"><span class="ic">↑↓</span><span class="nm">ubuntu-24.04.1-desktop-amd64.iso</span><span class="st">Partage (seed) · ↑ 240KiB/s · 3 seeders</span></div>
+          <div class="job"><span class="ic">✓</span><span class="nm">Big.Buck.Bunny.4K.torrent</span><span class="st">Terminé</span></div>
+          <div class="veil">Nettoyer les tâches terminées</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="wrap" style="padding-top:0">
     <div class="sec-head">
       <p class="eyebrow rv">POURQUOI VOUS ALLEZ L'ADORER</p>
       <p class="note rv">Une interface minimale posée sur le meilleur moteur BitTorrent en ligne de commande.</p>
