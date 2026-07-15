@@ -6,221 +6,258 @@
 <title>Torrent DL Pro Plus 3000 — STUPIDS STUDIO</title>
 <meta name="description" content="Téléchargeur de torrents macOS — magnet & .torrent. Moteur aria2 embarqué, universel Apple Silicon + Intel, mises à jour automatiques.">
 <link rel="icon" type="image/png" href="favicon.png">
+<meta property="og:title" content="Torrent DL Pro Plus 3000">
+<meta property="og:description" content="Téléchargeur de torrents macOS — magnet & .torrent. Moteur aria2 embarqué, universel Apple Silicon + Intel, mises à jour automatiques.">
+<meta property="og:image" content="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
 <style>
-  :root{
-    --blue:#2b8cff; --indigo:#6d4bff; --violet:#a14bff;
-    --hot:#ff2d4a; --amber:#ff9d00;
-    --ink:#eaf0ff; --muted:#9fb0d6;
-    --glass:rgba(255,255,255,.055);
-    --glass-bd:rgba(255,255,255,.12);
-    --bg:#05070f;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Inter,system-ui,sans-serif;
-    background:var(--bg); color:var(--ink); overflow-x:hidden;
-    -webkit-font-smoothing:antialiased; line-height:1.5;
-  }
-  a{color:inherit;text-decoration:none}
+:root{
+  --paper:#F2EFE6;--paper-2:#E7E3D6;--ink:#121212;
+  --blue:#2340D4;--red:#E8412A;--yellow:#F7C51E;--white:#fff;
+  --bd:2px solid var(--ink);
+  --sans:"Archivo","Helvetica Neue",Helvetica,-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+/* pas d'overflow:hidden ici — ça casserait le position:sticky de la nav */
+.frame{background:var(--paper);margin:10px;border:var(--bd)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px;width:100%}
+.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em}
 
-  /* ---------- Animated background ---------- */
-  .bg{position:fixed;inset:0;z-index:-3;overflow:hidden;background:
-      radial-gradient(1200px 800px at 70% -10%, rgba(45,80,200,.25), transparent 60%),
-      radial-gradient(900px 700px at 10% 110%, rgba(120,50,230,.22), transparent 60%),
-      var(--bg);}
-  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;mix-blend-mode:screen;will-change:transform}
-  .b1{width:46vw;height:46vw;left:-8vw;top:-6vw;background:radial-gradient(circle,#2b6bff,transparent 70%);animation:drift1 22s ease-in-out infinite}
-  .b2{width:40vw;height:40vw;right:-6vw;top:8vh;background:radial-gradient(circle,#7b3bff,transparent 70%);animation:drift2 26s ease-in-out infinite}
-  .b3{width:38vw;height:38vw;left:30vw;bottom:-14vw;background:radial-gradient(circle,#ff3b6b,transparent 70%);opacity:.35;animation:drift3 30s ease-in-out infinite}
-  @keyframes drift1{50%{transform:translate(8vw,6vh) scale(1.15)}}
-  @keyframes drift2{50%{transform:translate(-7vw,10vh) scale(1.1)}}
-  @keyframes drift3{50%{transform:translate(6vw,-8vh) scale(1.2)}}
-  .grid{position:fixed;inset:0;z-index:-2;
-    background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
-    background-size:54px 54px;mask-image:radial-gradient(circle at 50% 30%,#000 0%,transparent 75%);}
-  #stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+/* ---------- NAV ---------- */
+nav{border-bottom:var(--bd);background:var(--paper);position:sticky;top:0;z-index:60}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
+.logo{display:flex;align-items:center;gap:6px;flex:none}
+.logo .sq{width:22px;height:22px;background:var(--red);color:var(--white);font-family:var(--mono);
+  font-size:10px;font-weight:700;display:grid;place-items:center}
+.logo .ci{width:18px;height:18px;border-radius:50%;background:var(--blue)}
+.logo .tr{width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:16px solid var(--red)}
+.logo .rc{width:18px;height:18px;background:var(--yellow)}
+.logo .name{margin-left:8px;font-weight:800;letter-spacing:-.02em;font-size:16px;white-space:nowrap}
+.logo .ci,.logo .tr,.logo .rc{transition:transform .35s var(--ease)}
+.logo:hover .ci{transform:translateY(-4px)}
+.logo:hover .tr{transform:rotate(-15deg)}
+.logo:hover .rc{transform:rotate(45deg)}
+.nav-links{display:none;align-items:center;gap:30px}
+@media(min-width:900px){.nav-links{display:flex}}
+.nav-links a:not(.btn){font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;
+  position:relative;padding:4px 0}
+.nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--red);
+  transition:width .28s var(--ease)}
+.nav-links a:not(.btn):hover::after{width:100%}
 
-  /* ---------- Layout ---------- */
-  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-  section{position:relative}
+/* ---------- BOUTONS ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;padding:13px 20px;border:var(--bd);
+  background:var(--ink);color:var(--paper);cursor:pointer;white-space:nowrap;
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease)}
+.btn:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--red)}
+.btn .ar{transition:transform .18s var(--ease)}
+.btn:hover .ar{transform:translateX(4px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{box-shadow:4px 4px 0 var(--blue)}
+nav .btn{padding:11px 16px}
 
-  /* ---------- Nav ---------- */
-  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
-    background:rgba(8,11,22,.55);border-bottom:1px solid rgba(255,255,255,.07)}
-  .nav-in{display:flex;align-items:center;justify-content:space-between;height:62px}
-  .brand{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:.2px}
-  .brand img{width:30px;height:30px;border-radius:8px;box-shadow:0 4px 14px rgba(43,108,255,.45)}
-  .brand small{display:block;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:1.5px;text-transform:uppercase}
-  .nav-cta{font-size:14px;color:var(--muted);padding:8px 14px;border:1px solid var(--glass-bd);border-radius:10px;transition:.25s}
-  .nav-cta:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.05)}
+/* ---------- HERO ---------- */
+.hero{display:grid;grid-template-columns:1fr;border-bottom:var(--bd)}
+@media(min-width:900px){.hero{grid-template-columns:1.15fr .85fr}}
+.hero-l{padding:60px 32px 54px;max-width:660px;margin-left:auto;width:100%}
+@media(min-width:900px){.hero-l{padding:70px 48px 66px}}
+.hero h1{font-size:clamp(40px,5.6vw,72px);font-weight:900;line-height:.96;letter-spacing:-.035em;margin:22px 0 0}
+.hero .sub{margin-top:24px;font-size:16px;line-height:1.55;max-width:44ch;color:#2b2b2b}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.ver{margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5a5a5a}
 
-  /* ---------- Hero ---------- */
-  .hero{text-align:center;padding:74px 0 60px}
-  .icon-stage{position:relative;width:160px;height:160px;margin:0 auto 30px;perspective:800px}
-  .icon-glow{position:absolute;inset:-40px;border-radius:50%;
-    background:radial-gradient(circle,rgba(91,130,255,.6),rgba(120,60,255,.25) 45%,transparent 70%);
-    filter:blur(14px);animation:pulse 4.5s ease-in-out infinite}
-  @keyframes pulse{50%{transform:scale(1.18);opacity:.8}}
-  .icon-stage img{position:relative;width:160px;height:160px;border-radius:36px;
-    box-shadow:0 30px 70px rgba(20,40,120,.6),0 0 0 1px rgba(255,255,255,.08) inset;
-    animation:float 6s ease-in-out infinite;will-change:transform}
-  @keyframes float{50%{transform:translateY(-16px)}}
-  .ring{position:absolute;inset:-22px;border-radius:50%;border:1px solid rgba(140,170,255,.25);
-    animation:spin 18s linear infinite}
-  .ring::after{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;border-radius:50%;
-    background:#7da2ff;box-shadow:0 0 16px 4px #5b82ff;transform:translateX(-50%)}
-  @keyframes spin{to{transform:rotate(360deg)}}
+.hero-r{background:var(--blue);position:relative;overflow:hidden;min-height:420px;border-left:var(--bd);
+  display:grid;place-items:center}
+@media(max-width:899px){.hero-r{border-left:0;border-top:var(--bd);min-height:340px}}
+.hero-r .circle{position:absolute;top:-90px;right:-70px;width:280px;height:280px;border-radius:50%;
+  background:var(--yellow);animation:bob 9s ease-in-out infinite}
+/* centré : à gauche il chevaucherait la liste 01/02/03 */
+.hero-r .tri{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:0;
+  border-left:62px solid transparent;border-right:62px solid transparent;border-bottom:104px solid var(--red);
+  animation:slide 11s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(22px)}}
+@keyframes slide{50%{transform:translateX(-50%) translateY(-16px)}}
+.hero-r .icon{position:relative;z-index:2;width:132px;height:132px;border:var(--bd);background:var(--white);
+  display:grid;place-items:center;animation:bob2 7s ease-in-out infinite}
+.hero-r .icon img{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes bob2{50%{transform:translateY(-12px)}}
+.hero-r .rules{position:absolute;left:32px;bottom:26px;z-index:2}
+.hero-r .rules div{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--white);
+  text-transform:uppercase;margin-bottom:7px}
 
-  h1{font-size:clamp(38px,7vw,72px);font-weight:800;line-height:1.02;letter-spacing:-1.5px}
-  h1 .grad{background:linear-gradient(100deg,#7db0ff,#9b7bff 45%,#ff6a8a);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    background-size:200% auto;animation:shine 6s linear infinite}
-  @keyframes shine{to{background-position:200% center}}
-  .sub{margin:22px auto 0;max-width:560px;font-size:clamp(16px,2.2vw,20px);color:var(--muted)}
-  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-  .chip{font-size:13px;color:#cfe0ff;padding:7px 14px;border-radius:999px;
-    background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(8px)}
+/* ---------- BANDEAU ---------- */
+.strip{display:flex;border-bottom:var(--bd);background:var(--paper);overflow-x:auto;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip .cell{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;
+  padding:16px 24px;border-right:var(--bd);white-space:nowrap;transition:background .4s var(--ease)}
+.strip .cell:last-child{border-right:0;flex:1}
+.strip .cell.on{background:var(--yellow)}
 
-  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:36px}
-  .btn{position:relative;display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:600;
-    padding:15px 28px;border-radius:14px;transition:transform .2s,box-shadow .3s;overflow:hidden}
-  .btn.primary{color:#fff;background:linear-gradient(100deg,var(--blue),var(--indigo));
-    box-shadow:0 14px 40px rgba(60,90,255,.5)}
-  .btn.primary::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--indigo),var(--violet));opacity:0;transition:.3s}
-  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 20px 56px rgba(90,80,255,.65)}
-  .btn.primary:hover::before{opacity:1}
-  .btn.primary span{position:relative;z-index:1}
-  .btn.ghost{color:#dce6ff;border:1px solid var(--glass-bd);background:var(--glass);backdrop-filter:blur(8px)}
-  .btn.ghost:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.07)}
-  .platform{margin-top:16px;font-size:13px;color:var(--muted)}
+/* ---------- SECTIONS ---------- */
+section{padding:60px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+.sec-head .note{font-family:var(--mono);font-size:12px;color:#3a3a3a;letter-spacing:.04em;max-width:34ch}
+h2{font-size:clamp(28px,4.2vw,50px);font-weight:900;line-height:.98;letter-spacing:-.03em}
+.lead{font-size:16px;line-height:1.55;color:#3a3a3a;max-width:56ch;margin-top:12px}
 
-  /* ---------- Reveal ---------- */
-  .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
-  .reveal.in{opacity:1;transform:none}
+/* ---------- GRILLES (fond noir = filets de 2px) ---------- */
+/* minmax 320px : 3 colonnes au maximum, donc 6 tuiles remplissent
+   toujours la dernière rangée (pas de case noire orpheline). */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2px;
+  background:var(--ink);border:var(--bd)}
+.tile{background:var(--paper);padding:26px;position:relative;
+  transition:background .25s var(--ease),color .25s var(--ease)}
+.tile::before{content:"";position:absolute;left:0;top:0;height:100%;width:6px;background:var(--accent,var(--blue));
+  transform:scaleY(0);transform-origin:bottom;transition:transform .3s var(--ease)}
+.tile:hover::before{transform:scaleY(1)}
+.tile:hover{background:var(--ink);color:var(--paper)}
+.tile .ic{font-size:24px;margin-bottom:14px;display:block}
+.tile h3{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:7px}
+.tile p{font-size:14px;line-height:1.5;color:#3a3a3a;transition:color .25s}
+.tile:hover p{color:#c9c9c9}
 
-  /* ---------- Section heading ---------- */
-  .eyebrow{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#7d92c6;text-align:center}
-  .h2{font-size:clamp(28px,4.5vw,44px);font-weight:800;text-align:center;margin:10px 0 6px;letter-spacing:-1px}
-  .lead{text-align:center;color:var(--muted);max-width:560px;margin:0 auto 46px}
+/* ---------- APERÇU (fenêtre) ---------- */
+.window{border:var(--bd);background:var(--white);max-width:640px;margin:0 auto}
+.titlebar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:var(--bd);background:var(--paper-2)}
+.dot{width:11px;height:11px;border-radius:50%;flex:none}
+.dot.r{background:var(--red)}.dot.y{background:var(--yellow)}.dot.b{background:var(--blue)}
+.titlebar span.t{margin-left:8px;font-family:var(--mono);font-size:11px;text-transform:uppercase;
+  letter-spacing:.12em;color:#3a3a3a}
+.win-body{padding:20px;display:grid;gap:14px}
+.field{border:var(--bd);background:var(--paper);padding:13px 14px;font-family:var(--mono);
+  font-size:12px;color:#5a5a5a}
+.win-btns{display:flex;gap:10px;flex-wrap:wrap}
+.wb{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  padding:9px 14px;border:var(--bd);background:var(--paper)}
+.wb.prim{background:var(--ink);color:var(--paper)}
+.row{border:var(--bd);background:var(--paper);padding:13px 14px}
+.row .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.row .pct{color:var(--blue)}
+.bar{height:12px;border:var(--bd);background:var(--white)}
+.bar i{display:block;height:100%;width:6%;background:var(--blue);animation:load 3.2s ease-in-out infinite}
+@keyframes load{0%{width:6%}60%{width:84%}100%{width:84%}}
 
-  /* ---------- Features ---------- */
-  .features{padding:60px 0}
-  .grid-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px}
-  .card{position:relative;padding:26px;border-radius:18px;background:var(--glass);
-    border:1px solid var(--glass-bd);backdrop-filter:blur(12px);overflow:hidden;transition:transform .3s,border-color .3s}
-  .card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .35s;
-    background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(120,150,255,.18),transparent 45%)}
-  .card:hover{transform:translateY(-6px);border-color:rgba(150,175,255,.35)}
-  .card:hover::before{opacity:1}
-  .ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;margin-bottom:16px;font-size:24px;
-    background:linear-gradient(135deg,rgba(43,108,255,.3),rgba(120,60,255,.3));border:1px solid rgba(255,255,255,.12)}
-  .card h3{font-size:18px;margin-bottom:7px}
-  .card p{font-size:14.5px;color:var(--muted)}
+/* ---------- CTA FINALE ---------- */
+.final{border:var(--bd);background:var(--yellow);padding:56px 32px;text-align:center;position:relative;overflow:hidden}
+.final .sq1{position:absolute;top:-30px;left:-30px;width:110px;height:110px;background:var(--blue);
+  animation:rot 18s linear infinite}
+.final .sq2{position:absolute;bottom:-36px;right:-20px;width:0;height:0;border-left:56px solid transparent;
+  border-right:56px solid transparent;border-bottom:92px solid var(--red);animation:bob 8s ease-in-out infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.final h2{position:relative;z-index:2}
+.final .lead{position:relative;z-index:2;margin:14px auto 28px;color:#2b2b2b;text-align:center}
+.final .cta{position:relative;z-index:2;justify-content:center}
 
-  /* ---------- App mock ---------- */
-  .showcase{padding:50px 0 70px}
-  .window{max-width:560px;margin:0 auto;border-radius:18px;overflow:hidden;
-    background:linear-gradient(180deg,rgba(20,26,46,.9),rgba(12,16,30,.92));
-    border:1px solid rgba(255,255,255,.1);
-    box-shadow:0 40px 100px rgba(10,20,70,.6),0 0 0 1px rgba(255,255,255,.04) inset;
-    backdrop-filter:blur(10px)}
-  .titlebar{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
-  .dot{width:12px;height:12px;border-radius:50%}
-  .dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
-  .titlebar span{margin-left:8px;font-size:13px;color:var(--muted)}
-  .win-body{padding:20px}
-  .field{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:10px;
-    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:var(--muted);font-size:14px}
-  .win-btns{display:flex;gap:10px;margin-top:14px}
-  .wb{font-size:13px;padding:9px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.12);color:#dbe6ff}
-  .wb.prim{background:linear-gradient(100deg,var(--blue),var(--indigo));border:none;color:#fff;box-shadow:0 8px 24px rgba(60,90,255,.4)}
-  .row{margin-top:16px;padding:13px 14px;border-radius:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
-  .row .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:9px}
-  .row .pct{color:#8fb4ff}
-  .bar{height:7px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
-  .bar i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--blue),var(--violet));
-    box-shadow:0 0 16px rgba(90,120,255,.7);animation:load 3.2s ease-in-out infinite}
-  @keyframes load{0%{width:6%}60%{width:84%}100%{width:84%}}
+/* ---------- FOOTER ---------- */
+footer{background:var(--ink);color:var(--paper);padding:56px 0 50px;margin-top:10px}
+.foot-in{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap}
+footer h2{font-size:clamp(28px,3.6vw,40px)}
+footer .tag{display:inline-block;margin-top:12px;color:var(--yellow);font-family:var(--mono);font-size:14px}
+.foot-r{text-align:right;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:#8f8f8f;line-height:1.9}
+.foot-r a{transition:color .2s}.foot-r a:hover{color:var(--yellow)}
 
-  /* ---------- CTA band ---------- */
-  .band{padding:70px 0}
-  .band-in{position:relative;text-align:center;padding:54px 28px;border-radius:24px;overflow:hidden;
-    background:linear-gradient(120deg,rgba(43,90,255,.18),rgba(120,60,255,.16));
-    border:1px solid rgba(255,255,255,.12)}
-  .band-in::after{content:"";position:absolute;inset:-2px;background:
-    radial-gradient(600px circle at 20% 0%,rgba(91,130,255,.35),transparent 50%),
-    radial-gradient(600px circle at 90% 120%,rgba(255,60,110,.25),transparent 50%);z-index:0}
-  .band-in>*{position:relative;z-index:1}
-
-  /* ---------- Footer ---------- */
-  footer{padding:46px 0;border-top:1px solid rgba(255,255,255,.07);text-align:center;color:var(--muted);font-size:14px}
-  .studio{font-weight:800;font-family:system-ui;font-size:16px;
-    background:linear-gradient(100deg,var(--hot),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .flinks{display:flex;gap:18px;justify-content:center;margin:14px 0}
-  .flinks a:hover{color:#fff}
+/* ---------- RÉVÉLATION ----------
+   Amélioration progressive : l'état masqué n'existe que si JS est actif. */
+.js .rv{clip-path:inset(0 0 100% 0);transform:translateY(18px);
+  transition:clip-path .7s var(--ease),transform .7s var(--ease)}
+.js .rv.in{clip-path:inset(0 0 0 0);transform:none}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv{clip-path:none;transform:none}
+}
 </style>
 </head>
 <body>
-  <div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
-  <div class="grid"></div>
-  <canvas id="stars"></canvas>
+<div class="frame">
 
   <nav>
     <div class="wrap nav-in">
-      <a class="brand" href="#top">
-        <img src="icon.png" alt="">
-        <span>Torrent DL Pro Plus 3000<small>Stupids Studio</small></span>
+      <a class="logo" href="#top" aria-label="STUPIDS STUDIO">
+        <span class="sq">1a</span><span class="ci"></span><span class="tr"></span><span class="rc"></span>
+        <span class="name">Torrent DL Pro Plus 3000</span>
       </a>
-      <a class="nav-cta" href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GitHub ↗</a>
+      <div class="nav-links">
+        <a href="#features">Fonctions</a>
+        <a href="#apercu">Aperçu</a>
+        <a href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener">Télécharger <span class="ar">↓</span></a>
+      </div>
     </div>
   </nav>
 
-  <section class="hero wrap" id="top">
-    <div class="icon-stage">
-      <div class="icon-glow"></div>
-      <div class="ring"></div>
-      <img id="hicon" src="icon.png" alt="Icône Torrent DL">
+  <div class="hero" id="top">
+    <div class="hero-l">
+      <p class="eyebrow" style="color:var(--blue)">MACOS 14+ · MAGNET &amp; .TORRENT · GRATUIT</p>
+      <h1>Vos torrents,<br>en un aimant.</h1>
+      <p class="sub">Collez un lien magnet ou déposez un fichier <strong>.torrent</strong> — le téléchargement démarre tout seul. Rien à installer d'autre.</p>
+      <div class="cta">
+        <a class="btn" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener">Télécharger pour macOS <span class="ar">↓</span></a>
+        <a class="btn ghost" href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">Voir le code</a>
+      </div>
+      <p class="ver">Gratuit · Open source · 1er lancement : clic droit → Ouvrir</p>
     </div>
-    <h1>Vos torrents,<br><span class="grad">en un aimant.</span></h1>
-    <p class="sub">Collez un lien magnet ou déposez un fichier <b>.torrent</b> — le téléchargement démarre tout seul. Rien à installer d'autre.</p>
-    <div class="badges">
-      <span class="chip">macOS 14+</span>
-      <span class="chip">Universel · Apple Silicon + Intel</span>
-      <span class="chip">aria2 embarqué</span>
-      <span class="chip">Sans Homebrew</span>
+    <div class="hero-r">
+      <div class="circle"></div>
+      <div class="tri"></div>
+      <div class="icon"><img src="icon.png" alt="Icône Torrent DL"></div>
+      <div class="rules">
+        <div>01 / MAGNET &amp; .TORRENT</div>
+        <div>02 / ARIA2 EMBARQUÉ</div>
+        <div>03 / SANS HOMEBREW</div>
+      </div>
     </div>
-    <div class="cta-row">
-      <a class="btn primary" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener"><span>↓ Télécharger pour macOS</span></a>
-      <a class="btn ghost" href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">Voir le code</a>
+  </div>
+
+  <div class="strip" id="strip">
+    <div class="cell">MACOS 14+</div>
+    <div class="cell">UNIVERSEL · APPLE SILICON + INTEL</div>
+    <div class="cell">ARIA2 EMBARQUÉ</div>
+    <div class="cell">SANS HOMEBREW</div>
+    <div class="cell">OPEN SOURCE</div>
+  </div>
+
+  <section id="features" class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow rv" style="color:var(--red)">POURQUOI VOUS ALLEZ L'ADORER</p>
+        <h2 class="rv" style="margin-top:14px">Simple devant,<br>costaud derrière.</h2>
+      </div>
+      <p class="note rv">Une interface minimale posée sur le meilleur moteur BitTorrent en ligne de commande.</p>
     </div>
-    <p class="platform">Gratuit · Open source · 1er lancement : clic droit → Ouvrir</p>
+    <div class="tiles rv">
+      <div class="tile" style="--accent:var(--blue)"><span class="ic">🧲</span><h3>Magnet &amp; .torrent</h3><p>Collez un magnet, déposez un fichier .torrent, ou choisissez-le — tout est géré.</p></div>
+      <div class="tile" style="--accent:var(--red)"><span class="ic">⚡️</span><h3>Moteur aria2 embarqué</h3><p>Binaire universel inclus dans l'app. Autonome, aucune dépendance, pas besoin de Homebrew.</p></div>
+      <div class="tile" style="--accent:var(--yellow)"><span class="ic">🌐</span><h3>Réseau P2P complet</h3><p>DHT, échange de pairs (PEX) et LPD activés, plus une liste de trackers pour démarrer vite.</p></div>
+      <div class="tile" style="--accent:var(--blue)"><span class="ic">🎛️</span><h3>Vitesse &amp; file d'attente</h3><p>Plafonnez la réception et l'envoi, limitez les pairs, gérez les téléchargements simultanés.</p></div>
+      <div class="tile" style="--accent:var(--red)"><span class="ic">🔄</span><h3>Mises à jour auto</h3><p>Nouvelles versions téléchargées et installées automatiquement depuis GitHub (Sparkle).</p></div>
+      <div class="tile" style="--accent:var(--yellow)"><span class="ic">💻</span><h3>Universel &amp; léger</h3><p>Tourne nativement sur Apple Silicon et Intel. Mode barre de menu minimaliste inclus.</p></div>
+    </div>
   </section>
 
-  <section class="features wrap">
-    <div class="reveal">
-      <p class="eyebrow">Pourquoi vous allez l'adorer</p>
-      <h2 class="h2">Simple devant, costaud derrière</h2>
-      <p class="lead">Une interface minimale posée sur le meilleur moteur BitTorrent en ligne de commande.</p>
+  <section id="apercu" class="wrap" style="padding-top:0">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow rv" style="color:var(--blue)">APERÇU</p>
+        <h2 class="rv" style="margin-top:14px">Collez. Cliquez.<br>Téléchargé.</h2>
+      </div>
+      <p class="note rv">Aussi clair que ça, du premier magnet au fichier prêt.</p>
     </div>
-    <div class="grid-f">
-      <div class="card reveal"><div class="ic">🧲</div><h3>Magnet & .torrent</h3><p>Collez un magnet, déposez un fichier .torrent, ou choisissez-le — tout est géré.</p></div>
-      <div class="card reveal"><div class="ic">⚡️</div><h3>Moteur aria2 embarqué</h3><p>Binaire universel inclus dans l'app. Autonome, aucune dépendance, pas besoin de Homebrew.</p></div>
-      <div class="card reveal"><div class="ic">🌐</div><h3>Réseau P2P complet</h3><p>DHT, échange de pairs (PEX) et LPD activés, plus une liste de trackers pour démarrer vite.</p></div>
-      <div class="card reveal"><div class="ic">🎛️</div><h3>Vitesse & file d'attente</h3><p>Plafonnez la réception et l'envoi, limitez les pairs, gérez les téléchargements simultanés.</p></div>
-      <div class="card reveal"><div class="ic">🔄</div><h3>Mises à jour auto</h3><p>Nouvelles versions téléchargées et installées automatiquement depuis GitHub (Sparkle).</p></div>
-      <div class="card reveal"><div class="ic">💻</div><h3>Universel & léger</h3><p>Tourne nativement sur Apple Silicon et Intel. Mode barre de menu minimaliste inclus.</p></div>
-    </div>
-  </section>
-
-  <section class="showcase wrap">
-    <div class="reveal">
-      <p class="eyebrow">Aperçu</p>
-      <h2 class="h2">Collez. Cliquez. Téléchargé.</h2>
-      <p class="lead">Aussi clair que ça, du premier magnet au fichier prêt.</p>
-    </div>
-    <div class="window reveal">
-      <div class="titlebar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>Torrent DL Pro Plus 3000</span></div>
+    <div class="window rv">
+      <div class="titlebar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot b"></span>
+        <span class="t">Torrent DL Pro Plus 3000</span>
+      </div>
       <div class="win-body">
         <div class="field">🔗 Coller un lien magnet ou .torrent…</div>
         <div class="win-btns">
@@ -236,52 +273,64 @@
     </div>
   </section>
 
-  <section class="band wrap">
-    <div class="band-in reveal">
-      <h2 class="h2">Prêt à télécharger ?</h2>
-      <p class="lead" style="margin-bottom:30px">Gratuit, universel, et il se met à jour tout seul.</p>
-      <a class="btn primary" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener"><span>↓ Obtenir Torrent DL Pro Plus 3000</span></a>
+  <section class="wrap" style="padding-top:0">
+    <div class="final rv">
+      <div class="sq1"></div>
+      <div class="sq2"></div>
+      <h2>Prêt à télécharger ?</h2>
+      <p class="lead">Gratuit, universel, et il se met à jour tout seul.</p>
+      <div class="cta">
+        <a class="btn" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener">Obtenir Torrent DL <span class="ar">↓</span></a>
+        <a class="btn ghost" href="https://github.com/sandrophoto/torrentdl/releases" target="_blank" rel="noopener">Toutes les versions</a>
+      </div>
     </div>
   </section>
 
   <footer>
-    <div class="wrap">
-      <div class="studio">STUPIDS STUDIO</div>
-      <div class="flinks">
-        <a href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://github.com/sandrophoto/torrentdl/releases" target="_blank" rel="noopener">Versions</a>
-        <a href="https://stupidstudio.eu" target="_blank" rel="noopener">stupidstudio.eu</a>
+    <div class="wrap foot-in">
+      <div>
+        <h2>STUPIDS STUDIO</h2>
+        <a class="tag" href="https://stupidstudio.eu" target="_blank" rel="noopener">stupidstudio.eu</a>
       </div>
-      <div>© 2026 STUPIDS STUDIO — Tous droits réservés.</div>
+      <div class="foot-r">
+        <div><a href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GITHUB</a> · <a href="https://github.com/sandrophoto/torrentdl/releases" target="_blank" rel="noopener">VERSIONS</a></div>
+        <div>© 2026 STUPIDS STUDIO — TOUS DROITS RÉSERVÉS.</div>
+        <div>PETITS LOGICIELS, GROSSES OPINIONS</div>
+      </div>
     </div>
   </footer>
 
+</div>
+
 <script>
-  // Reveal on scroll
-  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
-  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%6*60)+'ms';io.observe(el)});
-
-  // Cursor sheen on cards
-  document.querySelectorAll('.card').forEach(c=>{
-    c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();
-      c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');});
+/* Révélation au scroll — volet net, en cascade.
+   Vérification directe au scroll/resize plutôt qu'IntersectionObserver :
+   une poignée d'éléments, c'est gratuit, et ça ne peut pas laisser la
+   page vide si l'observer ne se déclenche pas. */
+let rvs=[...document.querySelectorAll('.rv')];
+rvs.forEach((el,i)=>el.style.transitionDelay=(i%4*70)+'ms');
+function reveal(){
+  if(!rvs.length) return;
+  rvs=rvs.filter(el=>{
+    if(el.getBoundingClientRect().top > innerHeight-80) return true;
+    el.classList.add('in');return false;
   });
+}
+addEventListener('scroll',reveal,{passive:true});
+addEventListener('resize',reveal);
+addEventListener('load',reveal);
+requestAnimationFrame(reveal);
 
-  // Hero icon parallax
-  const hicon=document.getElementById('hicon');
-  window.addEventListener('mousemove',e=>{
-    const x=(e.clientX/innerWidth-.5),y=(e.clientY/innerHeight-.5);
-    hicon.style.transform=`rotateY(${x*16}deg) rotateX(${-y*16}deg)`;
-  });
-
-  // Drifting particles
-  const cv=document.getElementById('stars'),cx=cv.getContext('2d');let W,H,ps;
-  function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight;
-    ps=Array.from({length:Math.min(70,Math.floor(W/26))},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.7+.3,vy:Math.random()*.35+.06,a:Math.random()*.5+.2}));}
-  rsz();addEventListener('resize',rsz);
-  (function tick(){cx.clearRect(0,0,W,H);for(const p of ps){p.y-=p.vy;if(p.y<-4){p.y=H+4;p.x=Math.random()*W;}
-    cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);cx.fillStyle=`rgba(150,180,255,${p.a})`;cx.fill();}
-    requestAnimationFrame(tick);})();
+/* Bandeau : la cellule jaune se déplace de cellule en cellule */
+const cells=[...document.querySelectorAll('#strip .cell')];
+let ci=0;
+function tickStrip(){
+  cells.forEach(c=>c.classList.remove('on'));
+  cells[ci].classList.add('on');
+  ci=(ci+1)%cells.length;
+}
+tickStrip();
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches) setInterval(tickStrip,2200);
 </script>
 </body>
 </html>
