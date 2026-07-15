@@ -68,6 +68,18 @@ nav .btn{padding:11px 16px}
   transition:color .2s,border-color .2s}
 .lnk:hover{color:var(--app);border-color:var(--app)}
 
+/* ---------- Téléchargement en pause ----------
+   Les binaires restent dans les Releases et les apps installées continuent
+   de se mettre à jour : seule la mise à disposition publique est suspendue. */
+.soon{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;padding:14px 22px;background:var(--yellow);color:var(--ink)}
+.soon::before{content:"";width:8px;height:8px;background:var(--ink);flex:none;
+  animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+nav .soon{padding:11px 16px;font-size:11px}
+.slab .soon{background:var(--ink);color:var(--paper)}
+.slab .soon::before{background:var(--paper)}
+
 /* ---------- HERO ---------- */
 .hero{display:grid;grid-template-columns:1fr}
 @media(min-width:900px){.hero{grid-template-columns:1.1fr .9fr}}
@@ -271,7 +283,7 @@ footer .tag:hover{border-color:var(--app)}
         <a href="#features">Fonctions</a>
         <a href="#apercu">Aperçu</a>
         <a href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener">Télécharger <span class="ar">↓</span></a>
+        <span class="soon">Téléchargement en pause</span>
       </div>
     </div>
   </nav>
@@ -282,7 +294,7 @@ footer .tag:hover{border-color:var(--app)}
       <h1>Vos torrents,<br>en un aimant.</h1>
       <p class="sub">Collez un lien magnet ou déposez un fichier <strong>.torrent</strong> — le téléchargement démarre tout seul. Rien à installer d'autre.</p>
       <div class="cta">
-        <a class="btn" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener">Télécharger pour macOS <span class="ar">↓</span></a>
+        <span class="soon">Téléchargement en pause</span>
         <a class="lnk" href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">Voir le code</a>
       </div>
       <p class="ver">Gratuit · Open source · 1er lancement : clic droit → Ouvrir</p>
@@ -400,11 +412,10 @@ footer .tag:hover{border-color:var(--app)}
   <div class="slab">
     <div class="sq1"></div>
     <div class="tri2"></div>
-    <h2>Prêt à télécharger ?</h2>
-    <p class="lead">Gratuit, universel, et il se met à jour tout seul.</p>
+    <h2>Bientôt de retour.</h2>
+    <p class="lead">Le téléchargement est en pause, le temps qu'on remette tout d'équerre. Les apps déjà installées continuent de se mettre à jour.</p>
     <div class="cta">
-      <a class="btn" href="https://github.com/sandrophoto/torrentdl/releases/latest" target="_blank" rel="noopener">Obtenir Torrent DL <span class="ar">↓</span></a>
-      <a class="lnk" href="https://github.com/sandrophoto/torrentdl/releases" target="_blank" rel="noopener">Toutes les versions</a>
+      <span class="soon">Téléchargement en pause</span>
     </div>
   </div>
 
@@ -415,7 +426,7 @@ footer .tag:hover{border-color:var(--app)}
         <a class="tag" href="https://sandrophoto.github.io/#studio">Le studio</a>
       </div>
       <div class="foot-r">
-        <div><a href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GITHUB</a> · <a href="https://github.com/sandrophoto/torrentdl/releases" target="_blank" rel="noopener">VERSIONS</a></div>
+        <div><a href="https://github.com/sandrophoto/torrentdl" target="_blank" rel="noopener">GITHUB</a></div>
         <div>© 2026 STUPIDS STUDIO — TOUS DROITS RÉSERVÉS.</div>
         <div>PETITS LOGICIELS, GROSSES OPINIONS</div>
       </div>
